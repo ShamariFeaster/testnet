@@ -8,7 +8,7 @@ untup(X) when is_binary(X) -> base64:encode(X);
 %untup(X) when is_binary(X) -> X; %bad
 untup(X) -> X.
 unpack(I) when is_integer(I) -> I;
-unpack(JSON) -> unpack_helper(jiffy:decode(JSON)).
+unpack(JSON) -> unpack_helper(jsone:decode(JSON)).
 unpack_helper(J) when is_binary(J) -> base64:decode(J);
 %unpack_helper(J) when is_binary(J) -> J;%bad
 unpack_helper(J) when not is_list(J) -> J;
@@ -21,7 +21,7 @@ unpack_helper(J) ->
 	      is_integer(K) -> K	    
 	  end,
     list_to_tuple([Out|lists:map(fun(X) -> unpack_helper(X) end, tl(J))]).
-pack(X) -> jiffy:encode(untup(X)).
+pack(X) -> jsone:encode(untup(X)).
 -record(d, {a = "", b = "" }).
 test() -> 
     Record = #d{a=[1, 2, <<"abc">>, [], #d{}], b = <<1,2,3,200, 0:80000>> },
